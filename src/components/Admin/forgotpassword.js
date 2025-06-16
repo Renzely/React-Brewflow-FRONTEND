@@ -47,9 +47,9 @@ export default function ForgotPassword() {
 
   const handleSubmitEmail = async (event) => {
     event.preventDefault();
-    const email = event.currentTarget.email.value;
+    const emailAddress = event.currentTarget.email.value;
 
-    if (!email) {
+    if (!emailAddress) {
       Swal.fire("Unable to Proceed", "Please input your email", "warning");
       return;
     }
@@ -57,7 +57,7 @@ export default function ForgotPassword() {
     try {
       const response = await axios.post(
         "https://react-brewflow-backend.onrender.com/send-otp-forgotpassword",
-        { emailAddress: email }
+        { emailAddress: emailAddress }
       );
       const res = response.data;
       if (res.status === 200) {
@@ -189,7 +189,7 @@ export default function ForgotPassword() {
                 component="h1"
                 variant="h5"
                 fontWeight="bold"
-                color="#384959"
+                color="#1A133B"
                 align="center"
                 mb={2}
               >
@@ -215,10 +215,10 @@ export default function ForgotPassword() {
                     sx={{
                       mt: 3,
                       mb: 2,
-                      backgroundColor: "#558B71",
+                      backgroundColor: "#221C49",
                       fontWeight: "bold",
                       "&:hover": {
-                        backgroundColor: "#7FCFA8",
+                        backgroundColor: "#1A133B",
                       },
                     }}
                   >
@@ -231,12 +231,12 @@ export default function ForgotPassword() {
                     sx={{
                       mt: 1,
                       mb: 2,
-                      color: "#558B71",
-                      borderColor: "#558B71",
+                      color: "#1A133B",
+                      borderColor: "#1A133B",
                       fontWeight: "bold",
                       "&:hover": {
-                        backgroundColor: "#E8F5E9",
-                        borderColor: "#7FCFA8",
+                        backgroundColor: "#75708e",
+                        borderColor: "#1A133B",
                       },
                     }}
                     onClick={() => (window.location.href = "/")}
@@ -263,10 +263,10 @@ export default function ForgotPassword() {
                     sx={{
                       mt: 3,
                       mb: 2,
-                      backgroundColor: "#558B71",
+                      backgroundColor: "#221C49",
                       fontWeight: "bold",
                       "&:hover": {
-                        backgroundColor: "#7FCFA8",
+                        backgroundColor: "#1A133B",
                       },
                     }}
                   >
@@ -279,12 +279,12 @@ export default function ForgotPassword() {
                     sx={{
                       mt: 1,
                       mb: 2,
-                      color: "#558B71",
-                      borderColor: "#558B71",
+                      color: "#1A133B",
+                      borderColor: "#1A133B",
                       fontWeight: "bold",
                       "&:hover": {
-                        backgroundColor: "#E8F5E9",
-                        borderColor: "#7FCFA8",
+                        backgroundColor: "#75708e",
+                        borderColor: "#1A133B",
                       },
                     }}
                     onClick={() => (window.location.href = "/")}
@@ -321,10 +321,10 @@ export default function ForgotPassword() {
                     sx={{
                       mt: 3,
                       mb: 2,
-                      backgroundColor: "#558B71",
+                      backgroundColor: "#221C49",
                       fontWeight: "bold",
                       "&:hover": {
-                        backgroundColor: "#7FCFA8",
+                        backgroundColor: "#1A133B",
                       },
                     }}
                   >
@@ -337,12 +337,12 @@ export default function ForgotPassword() {
                     sx={{
                       mt: 1,
                       mb: 2,
-                      color: "#558B71",
-                      borderColor: "#558B71",
+                      color: "#1A133B",
+                      borderColor: "#1A133B",
                       fontWeight: "bold",
                       "&:hover": {
-                        backgroundColor: "#E8F5E9",
-                        borderColor: "#7FCFA8",
+                        backgroundColor: "#75708e",
+                        borderColor: "#1A133B",
                       },
                     }}
                     onClick={() => (window.location.href = "/")}

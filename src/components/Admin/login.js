@@ -52,7 +52,7 @@ export default function Login() {
         "https://react-brewflow-backend.onrender.com/login-admin",
         body
       );
-      const data = await response.data;
+      const data = response.data;
 
       if (data.status === 200) {
         Swal.fire({
@@ -70,6 +70,7 @@ export default function Login() {
           window.location.href = "/view-accounts";
         });
       } else {
+        // For extra safety (although 401 should go to catch)
         Swal.fire({
           title: "Login Failed!",
           text: data.data,
@@ -78,9 +79,14 @@ export default function Login() {
       }
     } catch (error) {
       console.error("Login Error:", error);
+
+      const backendMessage =
+        error?.response?.data?.data ||
+        "Something went wrong. Please try again later.";
+
       Swal.fire({
-        title: "Login Error!",
-        text: "Something went wrong. Please try again later.",
+        title: "Login Failed!",
+        text: backendMessage,
         icon: "error",
       });
     }

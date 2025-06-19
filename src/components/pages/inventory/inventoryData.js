@@ -174,12 +174,20 @@ export default function Inventory() {
       headerName: "Expiry Month",
       width: 180,
       headerClassName: "bold-header",
+      renderCell: (params) =>
+        Array.isArray(params.value)
+          ? params.value.join(", ")
+          : params.value || "-",
     },
     {
       field: "expiryQty",
       headerName: "Expiry Qty",
       width: 150,
       headerClassName: "bold-header",
+      renderCell: (params) =>
+        Array.isArray(params.value)
+          ? params.value.join(", ")
+          : params.value || "-",
     },
   ];
 
@@ -230,8 +238,10 @@ export default function Inventory() {
                 endingPCS: sku.endingPCS ?? 0,
                 offtake: sku.offtake ?? 0,
                 inventoryDays: sku.inventoryDays ?? 0,
-                expiryMonths: sku.expiryMonths || "",
-                expiryQty: sku.expiryQty ?? 0,
+                expiryMonths: Array.isArray(sku.expiryMonths)
+                  ? sku.expiryMonths
+                  : [],
+                expiryQty: Array.isArray(sku.expiryQty) ? sku.expiryQty : [],
               })
             );
 
@@ -326,22 +336,32 @@ export default function Inventory() {
                 weeksCovered: inv.weeksCovered,
                 month: inv.month,
                 week: inv.week,
-                version: "SKU", // keep a version column if you need it
+                version: "SKU",
                 status,
 
                 sku: item.sku,
                 skuCode: item.skuCode,
 
-                beginning:
+                beginningPCS:
                   status === "Carried" ? item.beginningPCS ?? 0 : status,
-                delivery: status === "Carried" ? item.deliveryPCS ?? 0 : status,
-                ending: status === "Carried" ? item.endingPCS ?? 0 : status,
+                deliveryPCS:
+                  status === "Carried" ? item.deliveryPCS ?? 0 : status,
+                endingPCS: status === "Carried" ? item.endingPCS ?? 0 : status,
                 offtake: status === "Carried" ? item.offtake ?? 0 : status,
-                inventoryDaysLevel:
+                inventoryDays:
                   status === "Carried" ? item.inventoryDays ?? 0 : status,
                 expiryMonths:
-                  status === "Carried" ? item.expiryMonths ?? "" : "",
-                expiryQty: status === "Carried" ? item.expiryQty ?? 0 : "",
+                  status === "Carried"
+                    ? Array.isArray(item.expiryMonths)
+                      ? item.expiryMonths.join(", ")
+                      : ""
+                    : "",
+                expiryQty:
+                  status === "Carried"
+                    ? Array.isArray(item.expiryQty)
+                      ? item.expiryQty.join(", ")
+                      : ""
+                    : "",
               });
             });
           });
@@ -401,33 +421,39 @@ export default function Inventory() {
         "Inventory Days Level",
       ];
 
-      const rows = data.data.map((item) => ({
-        "#": item.count,
-        Date: item.date,
-        Fullname: item.fullname,
-        Outlet: item.outlet,
-        "Weeks Covered": item.weeksCovered,
-        Month: item.month,
-        Week: item.week,
-        SKU: item.sku,
-        "SKU CODE": item.skuCode,
-        Status: item.status,
+      const rows = data.data.map((item) => {
+        const expiryMonths = Array.isArray(item.expiryMonths)
+          ? item.expiryMonths.join(", ")
+          : "";
 
-        Beginning: item.beginning,
-        Delivery: item.delivery,
-        Ending: item.ending,
+        const expiryQty = Array.isArray(item.expiryQty)
+          ? item.expiryQty.join(", ")
+          : "";
 
-        "Expiry Month": item.expiryMonth,
-        "Expiry Qty": item.expiryQty,
+        return {
+          "#": item.count,
+          Date: item.date,
+          Fullname: item.fullname || item.merchandiser || "",
+          Outlet: item.outlet,
+          "Weeks Covered": item.weeksCovered,
+          Month: item.month,
+          Week: item.week,
+          SKU: item.sku,
+          "SKU CODE": item.skuCode,
+          Status: item.status,
+          Beginning: item.beginning,
+          Delivery: item.delivery,
+          Ending: item.ending,
+          "Expiry Month": expiryMonths, // <-- fixed
+          "Expiry Qty": expiryQty,
+          Offtake: item.offtake,
+          "Inventory Days Level":
+            typeof item.inventoryDays === "number"
+              ? item.inventoryDays.toFixed(2)
+              : item.inventoryDays,
+        };
+      });
 
-        Offtake: item.offtake,
-        "Inventory Days Level":
-          typeof item.inventoryDays === "number"
-            ? item.inventoryDays.toFixed(2)
-            : item.inventoryDays,
-      }));
-
-      /* ---------- Excel build (unchanged layout logic) ---------- */
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet([]);
       XLSX.utils.sheet_add_aoa(ws, [headers], { origin: "A1" });
@@ -441,7 +467,6 @@ export default function Inventory() {
         return { wch: max + 4 };
       });
 
-      // bold header + center alignment
       headers.forEach((_, c) => {
         const cell = XLSX.utils.encode_cell({ r: 0, c });
         if (ws[cell]) {
@@ -469,7 +494,7 @@ export default function Inventory() {
       });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `INVENTORY_DATA_TOWI_${
+      link.download = `INVENTORY_DATA_ENGKANTO_${
         new Date().toISOString().split("T")[0]
       }.xlsx`;
       document.body.appendChild(link);

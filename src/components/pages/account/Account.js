@@ -119,7 +119,7 @@ export default function Account() {
     try {
       // Update the user's branches with the selected branches
       const response = await axios.put(
-        "https://react-brewflow-backend.onrender.com/update-user-branch",
+        "https://api-brewflow.bmphrc.com/update-user-branch",
         {
           email: modalEmail,
           outlet: selectedBranches,
@@ -325,7 +325,7 @@ export default function Account() {
         .map((outlet) => outlet.trim());
 
       const response = await axios.post(
-        "https://react-brewflow-backend.onrender.com/get-all-user"
+        "https://api-brewflow.bmphrc.com/get-all-user"
       );
       const data = response.data.data;
 
@@ -368,10 +368,7 @@ export default function Account() {
   async function setStatus() {
     console.log("check body", requestBody);
     await axios
-      .put(
-        "https://react-brewflow-backend.onrender.com/update-status",
-        requestBody
-      )
+      .put("https://api-brewflow.bmphrc.com/update-status", requestBody)
       .then(async (response) => {
         const data = await response.data.data;
 

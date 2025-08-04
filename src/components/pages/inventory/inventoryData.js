@@ -200,7 +200,7 @@ export default function Inventory() {
       }
 
       const response = await axios.post(
-        "https://react-brewflow-backend.onrender.com/retrieve-inventory-data",
+        "https://api-brewflow.bmphrc.com/retrieve-inventory-data",
         { outlet }
       );
 
@@ -308,7 +308,7 @@ export default function Inventory() {
   async function getDate({ startDate, endDate }) {
     try {
       const { data } = await axios.post(
-        "https://react-brewflow-backend.onrender.com/filter-date-range",
+        "https://api-brewflow.bmphrc.com/filter-date-range",
         { startDate, endDate }
       );
 
@@ -394,7 +394,7 @@ export default function Inventory() {
 
     try {
       const { data } = await axios.post(
-        "https://react-brewflow-backend.onrender.com/export-inventory",
+        "https://api-brewflow.bmphrc.com/export-inventory",
         {
           start: bDate,
           end: eDate,

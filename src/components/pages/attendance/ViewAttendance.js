@@ -86,7 +86,7 @@ export default function ViewAttendance() {
 
     try {
       const response = await axios.get(
-        "https://react-brewflow-backend.onrender.com/attendance/status",
+        "https://api-brewflow.bmphrc.com/attendance/status",
         {
           params: {
             email: email,
@@ -138,7 +138,7 @@ export default function ViewAttendance() {
       };
 
       const response = await axios.post(
-        "https://react-brewflow-backend.onrender.com/get-attendance",
+        "https://api-brewflow.bmphrc.com/get-attendance",
         requestBody
       );
 
@@ -481,7 +481,7 @@ export default function ViewAttendance() {
     try {
       // Fetch all users
       const userRes = await axios.post(
-        "https://react-brewflow-backend.onrender.com/get-all-user",
+        "https://api-brewflow.bmphrc.com/get-all-user",
         {}
       );
       const users = userRes.data.data;
@@ -498,7 +498,7 @@ export default function ViewAttendance() {
 
       // Fetch attendance data
       const attendanceRes = await axios.post(
-        "https://react-brewflow-backend.onrender.com/get-attendance",
+        "https://api-brewflow.bmphrc.com/get-attendance",
         {
           email,
           startDate: startDateStr,

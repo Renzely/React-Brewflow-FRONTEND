@@ -56,7 +56,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://react-brewflow-backend.onrender.com/send-otp-forgotpassword",
+        "https://api-brewflow.bmphrc.com/send-otp-forgotpassword",
         { emailAddress: emailAddress }
       );
       const res = response.data;
@@ -99,10 +99,7 @@ export default function ForgotPassword() {
     };
 
     axios
-      .put(
-        "https://react-brewflow-backend.onrender.com/forgot-password-reset",
-        body
-      )
+      .put("https://api-brewflow.bmphrc.com/forgot-password-reset", body)
       .then(async (response) => {
         const res = await response.data;
         if (res.status === 200) {
